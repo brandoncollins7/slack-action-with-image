@@ -14,7 +14,7 @@ inputs:
   slack_username:
     description: 'The name that send the message, example: Github. Override the default incoming Webhook Slack settings '
     required: false
-  image:
+  image_url:
     description: 'The image that will be displayed in the message'
     required: false
 runs:
