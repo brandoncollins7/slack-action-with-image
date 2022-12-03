@@ -1,4 +1,4 @@
-name: Slack Webhook for GitHub Actions
+name: Slack Webhook for GitHub Actions Including Image
 description: Send notification to a slack channel about the status of the workflows
 author: Blanca Ayala
 inputs:
