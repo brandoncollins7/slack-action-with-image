@@ -71,6 +71,7 @@ function generateSlackMessage(text) {
     const channel = core.getInput("slack_channel");
     const username = core.getInput("slack_username");
     const image_url = core.getInput("image_url");
+    const extra_text = core.getInput("extra_text");
     const result = {
         channel,
         username,
@@ -111,6 +112,9 @@ function generateSlackMessage(text) {
     }
     if (image_url) {
         result.attachments[0].image_url = image_url;
+    }
+    if (image_url) {
+        result.attachments[0].text = extra_text;
     }
     return result;
 }

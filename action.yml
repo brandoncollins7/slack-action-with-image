@@ -17,6 +17,9 @@ inputs:
   image_url:
     description: 'The image that will be displayed in the message'
     required: false
+  extra_text:
+    description: 'Extra text that will be displayed in the message'
+    required: false
 runs:
   using: node12
   main: src/index.js
