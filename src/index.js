@@ -43,11 +43,11 @@ function getColor(status) {
 
 function getText(status) {
     const actor = github.context.actor;
-    const workflow = github.context.workflow;	
+    const workflow = github.context.workflow;
     started = `<http://github.com/${actor}|${actor}>` + ' has *started* the "' + `${workflow}`  + '"' + ' workflow ';
     succeeded = 'The workflow "' + `${workflow}` + '"' + ' was completed *successfully* by ' + `<http://github.com/${actor}|${actor}>`;
     cancelled = ':warning: The workflow "' + `${workflow}` + '"' + ' was *canceled* by ' + `<http://github.com/${actor}|${actor}>`;
-    failure = '<!here> The workflow "' + `${workflow}` + '"' + ' *failed*';
+    failure = '<!here> The workflow "' + `${workflow}` + '"' + ' *failed*' + `<img src`;
     
     if (status.toLowerCase() === 'success') {
         return succeeded;
@@ -70,7 +70,8 @@ function generateSlackMessage(text) {
     const status = core.getInput("status");
     const channel = core.getInput("slack_channel");
     const username = core.getInput("slack_username");
-    return {
+    const image_url = core.getInput("image_url");
+    const result = {
         channel,
         username,
         text: getText(status),
@@ -86,28 +87,32 @@ function generateSlackMessage(text) {
                         "title": "Repository",
                         "value": `<https://github.com/${owner}/${repo}|${owner}/${repo}>`,
                         "short": true
-                    },      
+                    },
                     {
                         "title": "Ref",
                         "value": github.context.ref,
                         "short": true
-                    },                   
+                    },
                 ],
-                "actions": [ 
+                "actions": [
                     {
-                       "type": "button",
-                       "text": "Commit", 
-                       "url": `https://github.com/${owner}/${repo}/commit/${sha}` 
+                        "type": "button",
+                        "text": "Commit",
+                        "url": `https://github.com/${owner}/${repo}/commit/${sha}`
                     },
                     {
-                       "type": "button",
-                       "text": "Action Tab",
-                       "url": `https://github.com/${owner}/${repo}/commit/${sha}/checks` 
-                    }                
-                ]               
+                        "type": "button",
+                        "text": "Action Tab",
+                        "url": `https://github.com/${owner}/${repo}/commit/${sha}/checks`
+                    }
+                ]
             }
         ]
-    };
+    }
+    if (image_url) {
+        result.attachments[0].image_url = image_url;
+    }
+    return result;
 }
 try {
     post(generateSlackMessage('Sending message'));
